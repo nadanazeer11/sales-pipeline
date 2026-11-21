@@ -10,6 +10,7 @@ docker compose up -d          # local Postgres on :5433
 pnpm db:generate              # after editing packages/core/src/db/schema.ts
 pnpm db:migrate
 pnpm dev                      # engine: webhook server + scheduler (watch mode)
+pnpm web                      # dashboard on http://localhost:3000
 pnpm cli <command>            # operator CLI, run with no command for the list
 pnpm check                    # biome + tsc + vitest — must pass before finishing any task
 ```
@@ -18,10 +19,11 @@ pnpm check                    # biome + tsc + vitest — must pass before finish
 
 ```
 apps/engine/src     main.ts (boot), server.ts (Hono webhooks), scheduler.ts (tick + poll loops), cli.ts
+apps/web/src        Next.js dashboard: app/ (routes + actions.ts), components/{ui,shell,campaigns,leads,accounts}, lib/
 packages/core/src   all domain logic, one folder per domain:
-  accounts/         accounts.ts (repo), quota.ts (pure: limits, warmup, working hours, gaps)
-  campaigns/        campaigns.ts (repo), steps.ts (pure: step schema, render, advance)
-  leads/            leads.ts (repo + claim/transitions), import.ts (CSV)
+  accounts/         accounts.ts (repo), quota.ts (pure: limits, warmup, working hours, gaps), views.ts (dashboard reads)
+  campaigns/        campaigns.ts (repo), steps.ts (pure, also exported as @sp/core/steps), views.ts (dashboard reads)
+  leads/            leads.ts (repo + claim/transitions), import.ts (CSV), views.ts (dashboard reads)
   sequence/         runner.ts (one account turn = one LinkedIn action), chat.ts (pure pre-send check), sync.ts (accept polling)
   unipile/          client.ts (v2 fetch wrapper), payloads.ts (zod schemas + webhook parsing)
   webhooks/         handlers.ts (dedupe + dispatch), signature.ts (HMAC verify)
@@ -49,6 +51,13 @@ packages/core/test  vitest; fixtures/*.json are webhook payloads
 | `docs/decisions.md`    | Before changing a core choice; append a dated entry after making one |
 | `docs/unipile.md`      | Calling Unipile, handling its errors/limits, or webhook payloads     |
 | `docs/roadmap.md`      | Starting a session or picking next work; tick items off when done    |
+
+## Web (apps/web)
+
+- Next.js 16: APIs differ from older Next. Read `apps/web/node_modules/next/dist/docs/` before using a Next API (e.g. `proxy.ts` replaced middleware, `connection()` replaces `force-dynamic`, `params` is a Promise).
+- Server Components read from `@sp/core`; mutations are Server Actions in `app/**/actions.ts` returning `ActionResult`. No API routes.
+- Client components import only types from `@sp/core`, or pure helpers from `@sp/core/steps`. Never the root entry, because it pulls in the db client.
+- UI primitives live in `src/components/ui`, feature components in `src/components/<area>`, and state labels/colours only in `src/lib/states.ts`.
 
 ## Git
 

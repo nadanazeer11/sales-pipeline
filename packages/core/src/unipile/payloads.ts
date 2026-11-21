@@ -51,6 +51,8 @@ export const accountListSchema = z.looseObject({
   data: z.array(z.looseObject({ id: z.string(), name: str, provider: z.string(), status: str })),
 })
 
+export const authLinkSchema = z.looseObject({ link: z.string() })
+
 export const webhookEndpointSchema = z.looseObject({ id: z.string(), secret: z.string() })
 
 export type Profile = z.infer<typeof profileSchema>

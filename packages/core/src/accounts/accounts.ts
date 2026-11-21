@@ -64,7 +64,7 @@ export async function getUsage(accountId: string, now: Date): Promise<Usage> {
     .groupBy(actions.type)
   const of = (type: string) => rows.find((r) => r.type === type)
   return {
-    visitsDay: of('visit')?.day ?? 0,
+    visitsDay: (of('visit')?.day ?? 0) + (of('lookup')?.day ?? 0),
     invitesDay: of('invite')?.day ?? 0,
     invitesWeek: of('invite')?.week ?? 0,
     messagesDay: of('message')?.day ?? 0,

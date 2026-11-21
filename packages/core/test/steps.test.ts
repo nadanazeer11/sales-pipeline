@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { advance, render, type Step, stepsSchema } from '../src/campaigns/steps'
+import { advance, render, type Step, stepLabel, stepsSchema } from '../src/campaigns/steps'
 
 const steps: Step[] = [
   { type: 'visit' },
@@ -56,5 +56,23 @@ describe('campaign limits', () => {
     expect(() =>
       stepsSchema.parse([message('Hi {{firstName}}'), message('Hi {{firstName}}')]),
     ).toThrow(/distinct/)
+  })
+})
+
+describe('stepLabel', () => {
+  it('names steps by role and numbers follow-ups', () => {
+    const sequence: Step[] = [
+      { type: 'visit' },
+      { type: 'invite', timeoutDays: 21 },
+      { type: 'message', delayDays: 1, template: 'a' },
+      { type: 'message', delayDays: 2, template: 'b' },
+    ]
+    expect([0, 1, 2, 3, 4].map((i) => stepLabel(sequence, i))).toEqual([
+      'Visit profile',
+      'Connect',
+      'Message',
+      'Follow-up 1',
+      'Done',
+    ])
   })
 })

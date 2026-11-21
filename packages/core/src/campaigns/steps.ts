@@ -75,3 +75,16 @@ export function advance(steps: Step[], fromIndex: number, now: Date): Progress {
     lastError: null,
   }
 }
+
+export function stepLabel(steps: Step[], index: number): string {
+  const step = steps[index]
+  if (!step) return 'Done'
+  if (step.type === 'visit') return 'Visit profile'
+  if (step.type === 'invite') return 'Connect'
+  const position = steps.slice(0, index).filter((s) => s.type === 'message').length
+  return position === 0 ? 'Message' : `Follow-up ${position}`
+}
+
+export function messageCount(steps: Step[]): number {
+  return steps.filter((s) => s.type === 'message').length
+}

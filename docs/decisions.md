@@ -68,3 +68,11 @@ A reply webhook can land while a turn is in flight. Runner and `markConnected` w
 ### 2026-11-21 — Campaign limits: ≤10 steps, ≤5 messages, distinct templates
 
 One opener plus up to four follow-ups. Templates must differ, otherwise "already sent" detection could not tell steps apart.
+
+### 2026-11-21 — Dashboard: Server Components + Server Actions, no API layer
+
+`apps/web` (Next.js 16) reads straight from `@sp/core` in Server Components and mutates through Server Actions that call existing core functions. Read models live in each domain's `views.ts`. Client components import only types, or pure helpers from `@sp/core/steps`. Light theme only, minimal style (hairline tables, zinc neutrals, one blue accent, right-hand side panels). Live data via `router.refresh()` every 10–15s. Optional `DASHBOARD_PASSWORD` basic auth in `proxy.ts` for deployment.
+
+### 2026-11-21 — Silent profile fetches are `lookup` actions, not `visit`
+
+Message and invite steps re-read profiles for safety. These count toward the daily profile-view quota but are not visits the person sees, so they are recorded as `lookup` and hidden from the lead timeline and the "Viewed" funnel number.

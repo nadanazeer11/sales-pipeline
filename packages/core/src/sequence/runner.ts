@@ -42,7 +42,7 @@ export async function runAccountTurn(account: Account, now = new Date()): Promis
     const outcome = await execute(account, lead, now)
     const applied = await updateLead(lead.id, outcome.patch, lead.state)
     if (!applied) logger.info({ leadId: lead.id }, 'lead changed during turn, kept newer state')
-    if (outcome.visited) await recordAction(account.id, lead.id, 'visit', 'ok')
+    if (outcome.visited) await recordAction(account.id, lead.id, 'lookup', 'ok')
     if (outcome.action !== 'complete') {
       await recordAction(account.id, lead.id, outcome.action, 'ok', outcome.response)
       await setNextActionAt(
@@ -146,7 +146,7 @@ async function execute(account: Account, lead: DueLead, now: Date): Promise<Outc
       return {
         action: 'message',
         visited,
-        response: { chatId, reconciled: true },
+        response: { chatId, text, reconciled: true },
         patch: { ...next, chatId },
       }
     }
@@ -154,7 +154,7 @@ async function execute(account: Account, lead: DueLead, now: Date): Promise<Outc
   } else {
     chatId = (await unipile.startChat(accountId, userId, text)).chat_id
   }
-  return { action: 'message', visited, response: { chatId }, patch: { ...next, chatId } }
+  return { action: 'message', visited, response: { chatId, text }, patch: { ...next, chatId } }
 }
 
 async function withdraw(accountId: string, lead: DueLead): Promise<Outcome> {

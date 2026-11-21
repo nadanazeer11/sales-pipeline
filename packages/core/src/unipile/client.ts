@@ -3,6 +3,7 @@ import { env } from '../env'
 import type { ChatMessage } from '../sequence/chat'
 import {
   accountListSchema,
+  authLinkSchema,
   chatStartedSchema,
   messageListSchema,
   type Profile,
@@ -157,6 +158,16 @@ export const unipile = {
     request(at(accountId, `/chats/${seg(chatId)}/messages/send`), relaxed, {
       method: 'POST',
       json: { text },
+    }),
+
+  createAuthLink: (redirectUri: string) =>
+    request('/auth/link', authLinkSchema, {
+      method: 'POST',
+      json: {
+        expires_on: new Date(Date.now() + 60 * 60_000).toISOString(),
+        redirect_uri: redirectUri,
+        providers: ['linkedin'],
+      },
     }),
 
   createWebhookEndpoint: (url: string, accountIds?: string[]) =>

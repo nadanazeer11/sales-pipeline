@@ -3,3 +3,6 @@ node_modules
 *.log
 .DS_Store
 packages/core/test/fixtures/captured
+.next
+next-env.d.ts
+*.tsbuildinfo

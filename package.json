@@ -17,7 +17,9 @@
     "format": "biome check --write .",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
-    "check": "pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "web": "pnpm --filter @sp/web dev",
+    "web:build": "pnpm --filter @sp/web build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.8",

@@ -31,10 +31,13 @@
 
 ## Phase 2 — Multi-account + dashboard
 
-- [ ] `apps/web` Next.js dashboard: campaigns, lead table, per-account usage
-- [ ] Inbox view of replies
-- [ ] Campaign builder UI (replaces JSON files)
-- [ ] Per-account settings UI (limits, hours, warmup)
+- [x] `apps/web` Next.js dashboard: campaigns, lead table with filters, lead side panel with timeline, stop lead
+- [x] Inbox view of replies
+- [x] Campaign builder UI with live preview (replaces JSON files), CSV import dialog, start/pause
+- [x] Accounts: usage vs limits, settings panel (limits, hours, days, gaps, warm-up), connect + add account
+- [x] Optional `DASHBOARD_PASSWORD` basic auth
+- [ ] Deploy (engine + hosted Postgres + dashboard)
+- [ ] Bulk actions on leads (stop selected), campaign archive/duplicate
 
 ## Phase 3 — Intelligence
 

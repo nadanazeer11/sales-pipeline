@@ -15,6 +15,13 @@
       "when": 1795285072320,
       "tag": "0001_lead_state_stopped",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795288742066,
+      "tag": "0002_action_type_lookup",
+      "breakpoints": true
     }
   ]
 }

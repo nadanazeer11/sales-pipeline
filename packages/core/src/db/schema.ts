@@ -28,7 +28,13 @@ export const leadState = pgEnum('lead_state', [
   'failed',
   'stopped',
 ])
-export const actionType = pgEnum('action_type', ['visit', 'invite', 'message', 'withdraw'])
+export const actionType = pgEnum('action_type', [
+  'visit',
+  'invite',
+  'message',
+  'withdraw',
+  'lookup',
+])
 export const actionStatus = pgEnum('action_status', ['ok', 'error'])
 
 export const accounts = pgTable('accounts', {
