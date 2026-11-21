@@ -1,0 +1,27 @@
+{
+  "unipileAccountId": "acc_REPLACE_ME",
+  "name": "Founders Q1",
+  "steps": [
+    { "type": "visit" },
+    {
+      "type": "invite",
+      "note": "Hi {{firstName}}, enjoyed your posts on {{topic}}. Would love to connect.",
+      "timeoutDays": 21
+    },
+    {
+      "type": "message",
+      "delayDays": 1,
+      "template": "Thanks for connecting {{firstName}}! Curious how {{company}} handles outbound today?"
+    },
+    {
+      "type": "message",
+      "delayDays": 3,
+      "template": "Hi {{firstName}}, quick bump on this. Happy to share what's working for teams like yours."
+    },
+    {
+      "type": "message",
+      "delayDays": 5,
+      "template": "Last note from me {{firstName}}. If timing's off, no worries at all."
+    }
+  ]
+}
